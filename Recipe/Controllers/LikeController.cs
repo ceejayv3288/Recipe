@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Models.Dtos;
 using Recipe.Repositories.IRepositories;
+using System.Collections.Generic;
 
 namespace Recipe.Controllers
 {
@@ -11,10 +13,24 @@ namespace Recipe.Controllers
         private ILikeRepository _likeRepository;
         private readonly IMapper _mapper;
 
-        public LikeController(ICommentRepository likeRepository, IMapper mapper)
+        public LikeController(ILikeRepository likeRepository, IMapper mapper)
         {
             _likeRepository = likeRepository;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public IActionResult GetNationalParks()
+        {
+            var objList = _likeRepository.GetLikes();
+
+            var objDto = new List<LikeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<LikeDto>(obj));
+            }
+
+            return Ok(objDto);
         }
     }
 }

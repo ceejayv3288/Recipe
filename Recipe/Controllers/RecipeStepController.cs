@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Models.Dtos;
 using Recipe.Repositories.IRepositories;
+using System.Collections.Generic;
 
 namespace Recipe.Controllers
 {
@@ -15,6 +17,20 @@ namespace Recipe.Controllers
         {
             _recipeStepRepository = recipeStepRepository;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public IActionResult GetNationalParks()
+        {
+            var objList = _recipeStepRepository.GetRecipeSteps();
+
+            var objDto = new List<RecipeStepDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<RecipeStepDto>(obj));
+            }
+
+            return Ok(objDto);
         }
     }
 }
