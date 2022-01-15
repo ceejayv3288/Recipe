@@ -7,7 +7,7 @@ namespace Recipe.Repositories.IRepositories
     {
         ICollection<RecipeStep> GetRecipeSteps();
         RecipeStep GetRecipeStep(int recipeStepId);
-        bool RecipeStepExists(string name);
+        bool RecipeStepExists(string name, int stepId);
         bool RecipeStepExists(int id);
         bool CreateRecipeStep(RecipeStep recipeStep);
         bool UpdateRecipeStep(RecipeStep recipeStep);

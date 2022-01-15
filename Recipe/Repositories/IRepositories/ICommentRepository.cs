@@ -7,7 +7,7 @@ namespace Recipe.Repositories.IRepositories
     {
         ICollection<Comment> GetComments();
         Comment GetComment(int commentId);
-        bool CommentExists(string name);
+        bool CommentExists(string description);
         bool CommentExists(int id);
         bool CreateComment(Comment comment);
         bool UpdateComment(Comment comment);

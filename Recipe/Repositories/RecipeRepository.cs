@@ -1,49 +1,62 @@
-﻿using Recipe.Models;
+﻿using Recipe.Data;
+using Recipe.Models;
 using Recipe.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recipe.Repositories
 {
     public class RecipeRepository : IRecipeRepository
     {
+        private readonly ApplicationDbContext _db;
+
+        public RecipeRepository(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public bool CreateRecipe(RecipeModel recipe)
         {
-            throw new System.NotImplementedException();
+            _db.Recipes.Add(recipe);
+            return Save();
         }
 
         public bool DeleteRecipe(RecipeModel recipe)
         {
-            throw new System.NotImplementedException();
+            _db.Recipes.Remove(recipe);
+            return Save();
         }
 
         public RecipeModel GetRecipe(int recipeId)
         {
-            throw new System.NotImplementedException();
+            return _db.Recipes.FirstOrDefault(x => x.Id == recipeId);
         }
 
         public ICollection<RecipeModel> GetRecipes()
         {
-            throw new System.NotImplementedException();
+            return _db.Recipes.OrderBy(x => x.Name).ToList();
         }
 
         public bool RecipeExists(string name)
         {
-            throw new System.NotImplementedException();
+            bool value = _db.Recipes.Any(x => x.Name.ToLower().Trim() == name.ToLower().Trim());
+            return value;
         }
 
         public bool RecipeExists(int id)
         {
-            throw new System.NotImplementedException();
+            return _db.Recipes.Any(x => x.Id == id);
         }
 
         public bool Save()
         {
-            throw new System.NotImplementedException();
+            return _db.SaveChanges() >= 0 ? true : false;
         }
 
         public bool UpdateRecipe(RecipeModel recipe)
         {
-            throw new System.NotImplementedException();
+            _db.Recipes.Update(recipe);
+            return Save();
         }
     }
 }

@@ -1,49 +1,62 @@
-﻿using Recipe.Models;
+﻿using Recipe.Data;
+using Recipe.Models;
 using Recipe.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recipe.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
-        public bool CommentExists(string name)
+        private readonly ApplicationDbContext _db;
+
+        public CommentRepository(ApplicationDbContext db)
         {
-            throw new System.NotImplementedException();
+            _db = db;
+        }
+
+        public bool CommentExists(string description)
+        {
+            bool value = _db.Comments.Any(x => x.Description.ToLower().Trim() == description.ToLower().Trim());
+            return value;
         }
 
         public bool CommentExists(int id)
         {
-            throw new System.NotImplementedException();
+            return _db.Comments.Any(x => x.Id == id);
         }
 
         public bool CreateComment(Comment comment)
         {
-            throw new System.NotImplementedException();
+            _db.Comments.Add(comment);
+            return Save();
         }
 
         public bool DeleteComment(Comment comment)
         {
-            throw new System.NotImplementedException();
+            _db.Comments.Remove(comment);
+            return Save();
         }
 
         public Comment GetComment(int commentId)
         {
-            throw new System.NotImplementedException();
+            return _db.Comments.FirstOrDefault(x => x.Id == commentId);
         }
 
         public ICollection<Comment> GetComments()
         {
-            throw new System.NotImplementedException();
+            return _db.Comments.OrderBy(x => x.Description).ToList();
         }
 
         public bool Save()
         {
-            throw new System.NotImplementedException();
+            return _db.SaveChanges() >= 0 ? true : false;
         }
 
         public bool UpdateComment(Comment comment)
         {
-            throw new System.NotImplementedException();
+            _db.Comments.Update(comment);
+            return Save();
         }
     }
 }

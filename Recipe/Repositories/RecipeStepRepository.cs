@@ -1,49 +1,62 @@
-﻿using Recipe.Models;
+﻿using Recipe.Data;
+using Recipe.Models;
 using Recipe.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recipe.Repositories
 {
     public class RecipeStepRepository : IRecipeStepRepository
     {
+        private readonly ApplicationDbContext _db;
+
+        public RecipeStepRepository(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public bool CreateRecipeStep(RecipeStep recipeStep)
         {
-            throw new System.NotImplementedException();
+            _db.RecipeSteps.Add(recipeStep);
+            return Save();
         }
 
         public bool DeleteRecipeStep(RecipeStep recipeStep)
         {
-            throw new System.NotImplementedException();
+            _db.RecipeSteps.Remove(recipeStep);
+            return Save();
         }
 
         public RecipeStep GetRecipeStep(int recipeStepId)
         {
-            throw new System.NotImplementedException();
+            return _db.RecipeSteps.FirstOrDefault(x => x.Id == recipeStepId);
         }
 
         public ICollection<RecipeStep> GetRecipeSteps()
         {
-            throw new System.NotImplementedException();
+            return _db.RecipeSteps.OrderBy(x => x.Recipe.Name).ToList();
         }
 
-        public bool RecipeStepExists(string name)
+        public bool RecipeStepExists(string name, int stepId)
         {
-            throw new System.NotImplementedException();
+            bool value = _db.RecipeSteps.Any(x => x.Recipe.Name.ToLower().Trim() == name.ToLower().Trim() && x.StepId == stepId);
+            return value;
         }
 
         public bool RecipeStepExists(int id)
         {
-            throw new System.NotImplementedException();
+            return _db.RecipeSteps.Any(x => x.Id == id);
         }
 
         public bool Save()
         {
-            throw new System.NotImplementedException();
+            return _db.SaveChanges() >= 0 ? true : false;
         }
 
         public bool UpdateRecipeStep(RecipeStep recipeStep)
         {
-            throw new System.NotImplementedException();
+            _db.RecipeSteps.Update(recipeStep);
+            return Save();
         }
     }
 }
