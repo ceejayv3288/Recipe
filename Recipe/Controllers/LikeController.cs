@@ -90,5 +90,23 @@ namespace Recipe.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{likeId:int}", Name = "DeleteLike")]
+        public IActionResult DeleteLike(int likeId)
+        {
+            if (!_likeRepository.LikeExists(likeId))
+            {
+                return NotFound();
+            }
+
+            var likeObj = _likeRepository.GetLike(likeId);
+            if (!_likeRepository.DeleteLike(likeObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {likeObj.RecipeId}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

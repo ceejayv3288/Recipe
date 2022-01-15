@@ -90,5 +90,23 @@ namespace Recipe.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{recipeStepId:int}", Name = "DeleteRecipeStep")]
+        public IActionResult DeleteRecipeStep(int recipeStepId)
+        {
+            if (!_recipeStepRepository.RecipeStepExists(recipeStepId))
+            {
+                return NotFound();
+            }
+
+            var recipeStepObj = _recipeStepRepository.GetRecipeStep(recipeStepId);
+            if (!_recipeStepRepository.DeleteRecipeStep(recipeStepObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {recipeStepObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

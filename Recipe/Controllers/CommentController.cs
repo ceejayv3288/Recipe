@@ -90,5 +90,23 @@ namespace Recipe.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{commentId:int}", Name = "DeleteComment")]
+        public IActionResult DeleteComment(int commentId)
+        {
+            if (!_commentRepository.CommentExists(commentId))
+            {
+                return NotFound();
+            }
+
+            var commentObj = _commentRepository.GetComment(commentId);
+            if (!_commentRepository.DeleteComment(commentObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {commentObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

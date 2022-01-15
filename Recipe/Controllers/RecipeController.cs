@@ -90,5 +90,23 @@ namespace Recipe.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{recipeId:int}", Name = "DeleteRecipe")]
+        public IActionResult DeleteRecipe(int recipeId)
+        {
+            if (!_recipeRepository.RecipeExists(recipeId))
+            {
+                return NotFound();
+            }
+
+            var recipeObj = _recipeRepository.GetRecipe(recipeId);
+            if (!_recipeRepository.DeleteRecipe(recipeObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {recipeObj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
