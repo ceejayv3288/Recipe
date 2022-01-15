@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Models;
 using Recipe.Models.Dtos;
 using Recipe.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Recipe.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetNationalParks()
+        public IActionResult GetRecipeSteps()
         {
             var objList = _recipeStepRepository.GetRecipeSteps();
 
@@ -45,6 +46,31 @@ namespace Recipe.Controllers
             var objDto = _mapper.Map<RecipeStepDto>(obj);
 
             return Ok(objDto);
+        }
+
+        [HttpPost]
+        public IActionResult CreateRecipeStep([FromBody] RecipeStepDto recipeStepDto)
+        {
+            if (recipeStepDto == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_recipeStepRepository.RecipeStepExists(recipeStepDto.Id))
+            {
+                ModelState.AddModelError("", "The recipe steps already exist!");
+                return StatusCode(404, ModelState);
+            }
+
+            var recipeStepObj = _mapper.Map<RecipeStep>(recipeStepDto);
+            if (!_recipeStepRepository.CreateRecipeStep(recipeStepObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when saving the record {recipeStepObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            //return Ok();
+            return CreatedAtRoute("GetRecipeStep", new { recipeStepId = recipeStepObj.Id }, recipeStepObj);
         }
     }
 }

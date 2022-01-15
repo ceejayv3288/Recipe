@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Models;
 using Recipe.Models.Dtos;
 using Recipe.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Recipe.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetNationalParks()
+        public IActionResult GetComments()
         {
             var objList = _commentRepository.GetComments();
 
@@ -45,6 +46,31 @@ namespace Recipe.Controllers
             var objDto = _mapper.Map<CommentDto>(obj);
 
             return Ok(objDto);
+        }
+
+        [HttpPost]
+        public IActionResult CreateComment([FromBody] CommentDto commentDto)
+        {
+            if (commentDto == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_commentRepository.CommentExists(commentDto.Id))
+            {
+                ModelState.AddModelError("", "The comment already exist!");
+                return StatusCode(404, ModelState);
+            }
+
+            var commentObj = _mapper.Map<Comment>(commentDto);
+            if (!_commentRepository.CreateComment(commentObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when saving the record {commentObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            //return Ok();
+            return CreatedAtRoute("GetComment", new { commentId = commentObj.Id }, commentObj);
         }
     }
 }
