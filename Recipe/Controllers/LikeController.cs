@@ -72,5 +72,23 @@ namespace Recipe.Controllers
             //return Ok();
             return CreatedAtRoute("GetLike", new { likeId = likeObj.Id }, likeObj);
         }
+
+        [HttpPatch("{likeId:int}", Name = "UpdateLike")]
+        public IActionResult UpdateLike(int likeId, [FromBody] LikeDto likeDto)
+        {
+            if (likeDto == null || likeId != likeDto.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var likeObj = _mapper.Map<Like>(likeDto);
+            if (!_likeRepository.UpdateLike(likeObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when updating the record {likeObj.RecipeId}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

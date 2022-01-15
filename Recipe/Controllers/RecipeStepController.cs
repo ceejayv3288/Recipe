@@ -72,5 +72,23 @@ namespace Recipe.Controllers
             //return Ok();
             return CreatedAtRoute("GetRecipeStep", new { recipeStepId = recipeStepObj.Id }, recipeStepObj);
         }
+
+        [HttpPatch("{recipeStepId:int}", Name = "UpdateRecipeStep")]
+        public IActionResult UpdateRecipeStep(int recipeStepId, [FromBody] RecipeStepDto recipeStepDto)
+        {
+            if (recipeStepDto == null || recipeStepId != recipeStepDto.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var recipeStepObj = _mapper.Map<RecipeStep>(recipeStepDto);
+            if (!_recipeStepRepository.UpdateRecipeStep(recipeStepObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when updating the record {recipeStepObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

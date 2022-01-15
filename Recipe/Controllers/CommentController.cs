@@ -72,5 +72,23 @@ namespace Recipe.Controllers
             //return Ok();
             return CreatedAtRoute("GetComment", new { commentId = commentObj.Id }, commentObj);
         }
+
+        [HttpPatch("{commentId:int}", Name = "UpdateComment")]
+        public IActionResult UpdateComment(int commentId, [FromBody] CommentDto commentDto)
+        {
+            if (commentDto == null || commentId != commentDto.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var commentObj = _mapper.Map<Comment>(commentDto);
+            if (!_commentRepository.UpdateComment(commentObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when updating the record {commentObj.Description}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
