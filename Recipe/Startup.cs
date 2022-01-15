@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Recipe.Data;
+using Recipe.Mappers.RecipeMapper;
 using Recipe.Repositories;
 using Recipe.Repositories.IRepositories;
 using System;
@@ -38,6 +39,7 @@ namespace Recipe
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddAutoMapper(typeof(RecipeMappings));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
