@@ -32,5 +32,19 @@ namespace Recipe.Controllers
 
             return Ok(objDto);
         }
+
+        [HttpGet("{likeId:int}")]
+        public IActionResult GetLike(int likeId)
+        {
+            var obj = _likeRepository.GetLike(likeId);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            var objDto = _mapper.Map<LikeDto>(obj);
+
+            return Ok(objDto);
+        }
     }
 }

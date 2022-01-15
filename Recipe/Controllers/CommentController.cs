@@ -32,5 +32,19 @@ namespace Recipe.Controllers
 
             return Ok(objDto);
         }
+
+        [HttpGet("{commentId:int}")]
+        public IActionResult GetComment(int commentId)
+        {
+            var obj = _commentRepository.GetComment(commentId);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            var objDto = _mapper.Map<CommentDto>(obj);
+
+            return Ok(objDto);
+        }
     }
 }

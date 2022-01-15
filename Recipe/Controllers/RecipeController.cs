@@ -32,5 +32,19 @@ namespace Recipe.Controllers
 
             return Ok(objDto);
         }
+
+        [HttpGet("{recipeId:int}")]
+        public IActionResult GetRecipe(int recipeId)
+        {
+            var obj = _recipeRepository.GetRecipe(recipeId);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            var objDto = _mapper.Map<RecipeDto>(obj);
+
+            return Ok(objDto);
+        }
     }
 }
