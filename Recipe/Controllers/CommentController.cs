@@ -34,7 +34,7 @@ namespace Recipe.Controllers
             return Ok(objDto);
         }
 
-        [HttpGet("{commentId:int}")]
+        [HttpGet("{commentId:int}", Name = "GetComment")]
         public IActionResult GetComment(int commentId)
         {
             var obj = _commentRepository.GetComment(commentId);

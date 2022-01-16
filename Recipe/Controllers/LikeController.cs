@@ -34,7 +34,7 @@ namespace Recipe.Controllers
             return Ok(objDto);
         }
 
-        [HttpGet("{likeId:int}")]
+        [HttpGet("{likeId:int}", Name = "GetLike")]
         public IActionResult GetLike(int likeId)
         {
             var obj = _likeRepository.GetLike(likeId);

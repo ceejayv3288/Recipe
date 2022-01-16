@@ -34,7 +34,7 @@ namespace Recipe.Controllers
             return Ok(objDto);
         }
 
-        [HttpGet("{recipeId:int}")]
+        [HttpGet("{recipeId:int}", Name = "GetRecipe")]
         public IActionResult GetRecipe(int recipeId)
         {
             var obj = _recipeRepository.GetRecipe(recipeId);
