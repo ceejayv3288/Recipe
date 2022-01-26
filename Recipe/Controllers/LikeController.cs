@@ -73,7 +73,7 @@ namespace Recipe.Controllers
             return CreatedAtRoute("GetLike", new { likeId = likeObj.Id }, likeObj);
         }
 
-        [HttpPatch("{likeId:int}", Name = "UpdateLike")]
+        [HttpPut("{likeId:int}", Name = "UpdateLike")]
         public IActionResult UpdateLike(int likeId, [FromBody] LikeDto likeDto)
         {
             if (likeDto == null || likeId != likeDto.Id)

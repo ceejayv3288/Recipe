@@ -73,7 +73,7 @@ namespace Recipe.Controllers
             return CreatedAtRoute("GetComment", new { commentId = commentObj.Id }, commentObj);
         }
 
-        [HttpPatch("{commentId:int}", Name = "UpdateComment")]
+        [HttpPut("{commentId:int}", Name = "UpdateComment")]
         public IActionResult UpdateComment(int commentId, [FromBody] CommentDto commentDto)
         {
             if (commentDto == null || commentId != commentDto.Id)

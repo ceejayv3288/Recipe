@@ -73,7 +73,7 @@ namespace Recipe.Controllers
             return CreatedAtRoute("GetRecipe", new { recipeId = recipeObj.Id }, recipeObj);
         }
 
-        [HttpPatch("{recipeId:int}", Name = "UpdateRecipe")]
+        [HttpPut("{recipeId:int}", Name = "UpdateRecipe")]
         public IActionResult UpdateRecipe(int recipeId, [FromBody] RecipeDto recipeDto)
         {
             if (recipeDto == null || recipeId != recipeDto.Id)
