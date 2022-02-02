@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Recipe.Constants;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Recipe.Models
@@ -15,5 +16,6 @@ namespace Recipe.Models
         public int DurationInMin { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
+        public CourseTypeEnum CourseType { get; set; }
     }
 }
