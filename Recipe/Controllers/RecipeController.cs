@@ -8,10 +8,11 @@ using System.Collections.Generic;
 
 namespace Recipe.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/recipes")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class RecipeController : Controller
+    public class RecipeController : ControllerBase
     {
         private IRecipeRepository _recipeRepository;
         private readonly IMapper _mapper;

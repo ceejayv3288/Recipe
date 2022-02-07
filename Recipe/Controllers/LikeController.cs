@@ -8,10 +8,11 @@ using System.Collections.Generic;
 
 namespace Recipe.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/likes")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class LikeController : Controller
+    public class LikeController : ControllerBase
     {
         private ILikeRepository _likeRepository;
         private readonly IMapper _mapper;

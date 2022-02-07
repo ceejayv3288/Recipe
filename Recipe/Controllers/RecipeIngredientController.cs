@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Recipe.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/recipeIngredients")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class RecipeIngredientController : Controller
+    public class RecipeIngredientController : ControllerBase
     {
         private IRecipeIngredientRepository _recipeIngredientRepository;
         private readonly IMapper _mapper;
