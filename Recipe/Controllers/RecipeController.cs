@@ -20,6 +20,10 @@ namespace Recipe.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get list of recipes
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetRecipes()
         {
@@ -34,6 +38,11 @@ namespace Recipe.Controllers
             return Ok(objDto);
         }
 
+        /// <summary>
+        /// Get individual recipe
+        /// </summary>
+        /// <param name="recipeId"> The Id of the recipe</param>
+        /// <returns></returns>
         [HttpGet("{recipeId:int}", Name = "GetRecipe")]
         public IActionResult GetRecipe(int recipeId)
         {

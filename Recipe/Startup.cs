@@ -14,7 +14,9 @@ using Recipe.Repositories;
 using Recipe.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Recipe
@@ -42,9 +44,29 @@ namespace Recipe
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddAutoMapper(typeof(RecipeMappings));
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipe", Version = "v1" });
+                options.SwaggerDoc("RecipeOpenAPISpec",
+                                    new OpenApiInfo()
+                                    {
+                                        Title = "Recipe API",
+                                        Version = "v1",
+                                        Description = "Recipe API",
+                                        Contact = new OpenApiContact()
+                                        {
+                                            Email = "ceejayv328@gmail.com",
+                                            Name = "Christian Joseph Vargas",
+                                            Url = new Uri("https://www.linkedin.com/in/christian-joseph-vargas-0001481a3/")
+                                        },
+                                        License = new OpenApiLicense()
+                                        {
+                                            Name = "MIT License",
+                                            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                                        }
+                                    });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                options.IncludeXmlComments(xmlCommentsFullPath);
             });
         }
 
@@ -54,13 +76,17 @@ namespace Recipe
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Recipe v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/RecipeOpenAPISpec/swagger.json", "Recipe API");
+            });
 
             app.UseAuthorization();
 
