@@ -39,7 +39,7 @@ namespace Recipe.Repositories
 
         public bool RecipeStepExists(string name, int stepId)
         {
-            bool value = _db.RecipeSteps.Any(x => x.Recipe.Name.ToLower().Trim() == name.ToLower().Trim() && x.StepId == stepId);
+            bool value = _db.RecipeSteps.Any(x => x.Recipe.Name.ToLower().Trim() == name.ToLower().Trim() && x.Id == stepId);
             return value;
         }
 

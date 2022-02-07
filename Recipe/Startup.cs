@@ -36,6 +36,7 @@ namespace Recipe
 
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IRecipeStepRepository, RecipeStepRepository>();
+            services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
