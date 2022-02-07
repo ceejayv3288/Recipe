@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Models;
 using Recipe.Models.Dtos;
@@ -9,6 +10,7 @@ namespace Recipe.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class CommentController : Controller
     {
         private ICommentRepository _commentRepository;
@@ -21,6 +23,7 @@ namespace Recipe.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<CommentDto>))]
         public IActionResult GetComments()
         {
             var objList = _commentRepository.GetComments();
@@ -35,6 +38,9 @@ namespace Recipe.Controllers
         }
 
         [HttpGet("{commentId:int}", Name = "GetComment")]
+        [ProducesResponseType(200, Type = typeof(CommentDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
         public IActionResult GetComment(int commentId)
         {
             var obj = _commentRepository.GetComment(commentId);
@@ -49,6 +55,10 @@ namespace Recipe.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(CommentDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateComment([FromBody] CommentDto commentDto)
         {
             if (commentDto == null)
@@ -74,6 +84,9 @@ namespace Recipe.Controllers
         }
 
         [HttpPut("{commentId:int}", Name = "UpdateComment")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateComment(int commentId, [FromBody] CommentDto commentDto)
         {
             if (commentDto == null || commentId != commentDto.Id)
@@ -92,6 +105,10 @@ namespace Recipe.Controllers
         }
 
         [HttpDelete("{commentId:int}", Name = "DeleteComment")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteComment(int commentId)
         {
             if (!_commentRepository.CommentExists(commentId))

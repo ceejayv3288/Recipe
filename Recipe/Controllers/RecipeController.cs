@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Models;
 using Recipe.Models.Dtos;
@@ -9,6 +10,7 @@ namespace Recipe.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class RecipeController : Controller
     {
         private IRecipeRepository _recipeRepository;
@@ -25,6 +27,7 @@ namespace Recipe.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<RecipeDto>))]
         public IActionResult GetRecipes()
         {
             var objList = _recipeRepository.GetRecipes();
@@ -44,6 +47,9 @@ namespace Recipe.Controllers
         /// <param name="recipeId"> The Id of the recipe</param>
         /// <returns></returns>
         [HttpGet("{recipeId:int}", Name = "GetRecipe")]
+        [ProducesResponseType(200, Type = typeof(RecipeDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
         public IActionResult GetRecipe(int recipeId)
         {
             var obj = _recipeRepository.GetRecipe(recipeId);
@@ -58,6 +64,10 @@ namespace Recipe.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(RecipeDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateRecipe([FromBody] RecipeDto recipeDto)
         {
             if (recipeDto == null)
@@ -83,6 +93,9 @@ namespace Recipe.Controllers
         }
 
         [HttpPut("{recipeId:int}", Name = "UpdateRecipe")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateRecipe(int recipeId, [FromBody] RecipeDto recipeDto)
         {
             if (recipeDto == null || recipeId != recipeDto.Id)
@@ -101,6 +114,10 @@ namespace Recipe.Controllers
         }
 
         [HttpDelete("{recipeId:int}", Name = "DeleteRecipe")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteRecipe(int recipeId)
         {
             if (!_recipeRepository.RecipeExists(recipeId))

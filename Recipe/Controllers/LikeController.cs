@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Models;
 using Recipe.Models.Dtos;
@@ -9,6 +10,7 @@ namespace Recipe.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class LikeController : Controller
     {
         private ILikeRepository _likeRepository;
@@ -21,6 +23,7 @@ namespace Recipe.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<LikeDto>))]
         public IActionResult GetLikes()
         {
             var objList = _likeRepository.GetLikes();
@@ -35,6 +38,9 @@ namespace Recipe.Controllers
         }
 
         [HttpGet("{likeId:int}", Name = "GetLike")]
+        [ProducesResponseType(200, Type = typeof(LikeDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
         public IActionResult GetLike(int likeId)
         {
             var obj = _likeRepository.GetLike(likeId);
@@ -49,6 +55,10 @@ namespace Recipe.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(LikeDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLike([FromBody] LikeDto likeDto)
         {
             if (likeDto == null)
@@ -74,6 +84,9 @@ namespace Recipe.Controllers
         }
 
         [HttpPut("{likeId:int}", Name = "UpdateLike")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateLike(int likeId, [FromBody] LikeDto likeDto)
         {
             if (likeDto == null || likeId != likeDto.Id)
@@ -92,6 +105,10 @@ namespace Recipe.Controllers
         }
 
         [HttpDelete("{likeId:int}", Name = "DeleteLike")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteLike(int likeId)
         {
             if (!_likeRepository.LikeExists(likeId))
