@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Models;
@@ -12,6 +13,7 @@ namespace Recipe.Controllers
     [Route("api/v{version:apiVersion}/recipeSteps")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = "Admin, Member, Tester")]
     public class RecipeStepController : ControllerBase
     {
         private IRecipeStepRepository _recipeStepRepository;

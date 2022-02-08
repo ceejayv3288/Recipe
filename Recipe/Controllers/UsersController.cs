@@ -17,6 +17,7 @@ namespace Recipe.Controllers
             _userRepository = userRepository;
         }
 
+        [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] User model)
         {
