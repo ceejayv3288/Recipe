@@ -19,7 +19,7 @@ namespace Recipe.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User model)
+        public IActionResult Authenticate([FromBody] AuthenticationModel model)
         {
             var user = _userRepository.Authenticate(model.Username, model.Password);
 
