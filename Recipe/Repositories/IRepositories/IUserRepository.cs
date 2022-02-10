@@ -6,6 +6,6 @@ namespace Recipe.Repositories.IRepositories
     {
         bool IsUniqueUser(string username);
         User Authenticate(string username, string passwork);
-        User Register(string username, string password);
+        User Register(User user);
     }
 }

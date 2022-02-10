@@ -35,7 +35,7 @@ namespace Recipe.Controllers
             bool ifUserNameUnique = _userRepository.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)
                 return BadRequest(new { message = "Username already exist" });
-            var user = _userRepository.Register(model.Username, model.Password);
+            var user = _userRepository.Register(model);
 
             if (user == null)
                 return BadRequest(new { message = "Error while registering" });

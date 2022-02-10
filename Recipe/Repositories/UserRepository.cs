@@ -58,13 +58,18 @@ namespace Recipe.Repositories
             return false;
         }
 
-        public User Register(string username, string password)
+        public User Register(User user)
         {
             User userObj = new User()
             {
-                Username = username,
-                Password = password,
-                Role = "Admin"
+                Username = user.Username,
+                Password = user.Password,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                ProfilePicture = user.ProfilePicture,
+                DateCreated = DateTime.UtcNow,
+                Role = "Member"
             };
 
             _db.Users.Add(userObj);
