@@ -65,7 +65,7 @@ namespace Recipe.Controllers
 
             HttpUtility.UrlDecode(token);
             var result = await _userRepository.ConfirmEmailAsync(user.Id, token);
-            var body = System.IO.File.ReadAllText(string.Format("EmailTemplates/EmailConfirmed.html"));
+            var body = System.IO.File.ReadAllText(string.Format("Templates/EmailConfirmed.html"));
             if (result.IsSuccess)
             {
                 return new ContentResult
