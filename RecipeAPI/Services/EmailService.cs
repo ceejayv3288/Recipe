@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Recipe.Constants;
 using Recipe.Models;
-using Recipe.Repositories.IRepositories;
+using Recipe.Services.IServices;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -9,7 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recipe.Repositories
+namespace Recipe.Services
 {
     public class EmailService : IEmailService
     {

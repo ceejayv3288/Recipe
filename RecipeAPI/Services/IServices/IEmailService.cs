@@ -1,7 +1,7 @@
 ﻿using Recipe.Models;
 using System.Threading.Tasks;
 
-namespace Recipe.Repositories.IRepositories
+namespace Recipe.Services.IServices
 {
     public interface IEmailService
     {
