@@ -31,7 +31,7 @@ namespace Recipe.Controllers
             var user = await _userRepository.LoginAsync(model.Username, model.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return Unauthorized(new User { Response = new UserManagerResponse { IsSuccess = false, Message = "Error while login" } });
             return Ok(user);
         }
 
@@ -41,13 +41,13 @@ namespace Recipe.Controllers
         {
             bool ifUserNameUnique = _userRepository.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)
-                return BadRequest(new { message = "Username already exist" });
+                return BadRequest(new User { Response = new UserManagerResponse { IsSuccess = false, Message = "Username already exist" } });
             var user = await _userRepository.RegisterAsync(model);
 
             if (user == null)
-                return BadRequest(new { message = "Error while registering" });
+                return BadRequest(new User { Response = new UserManagerResponse { IsSuccess = false, Message = "Error while registering" } });
 
-            return Ok();
+            return Ok(user);
         }
 
         [AllowAnonymous]

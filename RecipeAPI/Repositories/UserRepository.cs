@@ -106,7 +106,7 @@ namespace Recipe.Repositories
             var result = await _userManager.CreateAsync(userObj, user.Password);
             if (!result.Succeeded)
             {
-                return new User { Response = new UserManagerResponse { IsSuccess = false, Errors = new List<string>((IEnumerable<string>)result.Errors) } };
+                return new User { Response = new UserManagerResponse { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) } };
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userObj);
