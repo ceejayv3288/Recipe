@@ -19,6 +19,7 @@ namespace Recipe.Mappers.RecipeMapper
             CreateMap<RecipeStep, RecipeStepDto>().ReverseMap();
             CreateMap<RecipeStep, RecipeStepCreateDto>().ReverseMap();
             CreateMap<RecipeStep, RecipeStepUpdateDto>().ReverseMap();
+            CreateMap<User, UserRegistrationModel>().ReverseMap();
         }
     }
 }

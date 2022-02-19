@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Recipe.Models;
 using Recipe.Repositories.IRepositories;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Recipe.Controllers
 {
@@ -11,17 +16,19 @@ namespace Recipe.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, UserManager<User> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticationModel model)
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromBody] AuthenticationModel model)
         {
-            var user = _userRepository.Authenticate(model.Username, model.Password);
+            var user = await _userRepository.LoginAsync(model.Username, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -30,17 +37,45 @@ namespace Recipe.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User model)
+        public async Task<IActionResult> RegisterAsync([FromBody] UserRegistrationModel model)
         {
             bool ifUserNameUnique = _userRepository.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)
                 return BadRequest(new { message = "Username already exist" });
-            var user = _userRepository.Register(model);
+            var user = await _userRepository.RegisterAsync(model);
 
             if (user == null)
                 return BadRequest(new { message = "Error while registering" });
 
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(string uid, string token)
+        {
+            if (string.IsNullOrWhiteSpace(uid) || string.IsNullOrWhiteSpace(token))
+                return NotFound();
+
+            var user = await _userManager.FindByIdAsync(uid);
+            var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            if (isEmailConfirmed)
+                return Ok();
+
+            HttpUtility.UrlDecode(token);
+            var result = await _userRepository.ConfirmEmailAsync(user.Id, token);
+            var body = System.IO.File.ReadAllText(string.Format("EmailTemplates/EmailConfirmed.html"));
+            if (result.IsSuccess)
+            {
+                return new ContentResult
+                {
+                    ContentType = "text/html",
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Content = body
+                };
+            }
+            return BadRequest(result);
         }
     }
 }
