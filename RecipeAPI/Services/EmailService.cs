@@ -14,7 +14,6 @@ namespace RecipeAPI.Services
     public class EmailService : IEmailService
     {
         private readonly SMTPConfigModel _smtpConfig;
-        private readonly SendGridConfigModel _sendGridConfig;
 
         public EmailService(IOptions<SMTPConfigModel> smtpConfig)
         {
