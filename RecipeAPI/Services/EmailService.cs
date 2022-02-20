@@ -58,7 +58,7 @@ namespace RecipeAPI.Services
                 var response = await client.SendEmailAsync(msg);
             }
 
-            if (true)
+            if (false)
             {
                 //Basic SMTP
                 MailMessage mail = new MailMessage
