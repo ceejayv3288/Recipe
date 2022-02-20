@@ -29,9 +29,11 @@ namespace RecipeAPI.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] AuthenticationModel model)
         {
             var user = await _userRepository.LoginAsync(model.Username, model.Password);
-
             if (user == null)
-                return Unauthorized(new UserModel { Response = new UserManagerResponseModel { IsSuccess = false, Message = "Error while login" } });
+                return Unauthorized(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Error while login" } });
+            if (!user.Response.IsSuccess)
+                return Unauthorized(user);
+
             return Ok(user);
         }
 
@@ -41,13 +43,16 @@ namespace RecipeAPI.Controllers
         {
             bool ifUserNameUnique = _userRepository.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)
-                return BadRequest(new UserModel { Response = new UserManagerResponseModel { IsSuccess = false, Message = "Username already exist" } });
-            var user = await _userRepository.RegisterAsync(model);
+                return BadRequest(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Username already exist" } });
 
-            if (user == null)
-                return BadRequest(new UserModel { Response = new UserManagerResponseModel { IsSuccess = false, Message = "Error while registering" } });
+            var response = await _userRepository.RegisterAsync(model);
+            if (response == null)
+                return BadRequest(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Error while registering" } });
 
-            return Ok(user);
+            if (response.IsSuccess)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
 
         [AllowAnonymous]

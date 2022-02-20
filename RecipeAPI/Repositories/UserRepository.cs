@@ -44,38 +44,48 @@ namespace RecipeAPI.Repositories
 
         public async Task<UserModel> LoginAsync(string username, string password)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            var userResult = await _userManager.FindByNameAsync(username);
+            if (userResult == null)
             {
                 return new UserModel
                 {
-                    Response = new UserManagerResponseModel
+                    Response = new ResponseModel
                     {
-                        Message = "There is no user with that username",
+                        Message = "There is no user with that username.",
                         IsSuccess = false
                     }
                 };
             }
-            var result = await _userManager.CheckPasswordAsync(user, password);
-            if (!result)
+            var checkPasswordResult = await _userManager.CheckPasswordAsync(userResult, password);
+            if (!checkPasswordResult)
                 return new UserModel
                 {
-                    Response = new UserManagerResponseModel
+                    Response = new ResponseModel
                     {
-                        Message = "Invalid password",
+                        Message = "Invalid password.",
+                        IsSuccess = false,
+                    }
+                };
+            var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(userResult);
+            if (!isEmailConfirmed)
+                return new UserModel
+                {
+                    Response = new ResponseModel
+                    {
+                        Message = "Email is not confirmed.",
                         IsSuccess = false,
                     }
                 };
 
-            await _signInManager.PasswordSignInAsync(user.UserName, password, true, false);
+            await _signInManager.PasswordSignInAsync(userResult.UserName, password, true, false);
             //if user was found, generate a jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, userResult.Id.ToString()),
+                    new Claim(ClaimTypes.Role, userResult.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -83,11 +93,11 @@ namespace RecipeAPI.Repositories
                 Audience = _configuration.GetSection("AppSettings:Audience").Value
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
-            user.PasswordHash = string.Empty;
-            user.Response = new UserManagerResponseModel { IsSuccess = true, Message = "Login Successful." };
+            userResult.Token = tokenHandler.WriteToken(token);
+            userResult.PasswordHash = string.Empty;
+            userResult.Response = new ResponseModel { IsSuccess = true, Message = "Login Successful." };
 
-            return user;
+            return userResult;
         }
 
         public bool IsUniqueUser(string username)
@@ -100,13 +110,13 @@ namespace RecipeAPI.Repositories
             return false;
         }
 
-        public async Task<UserModel> RegisterAsync(UserRegistrationModel user)
+        public async Task<ResponseModel> RegisterAsync(UserRegistrationModel user)
         {
             var userObj = _mapper.Map<UserModel>(user);
             var result = await _userManager.CreateAsync(userObj, user.Password);
             if (!result.Succeeded)
             {
-                return new UserModel { Response = new UserManagerResponseModel { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) } };
+                return new ResponseModel { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) };
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userObj);
@@ -125,12 +135,12 @@ namespace RecipeAPI.Repositories
             };
             await _emailService.SendEmailForEmailConfirmation(options);
 
-            return userObj;
+            return new ResponseModel { IsSuccess = true, Message = "Please check you email to complete the registration." };
         }
 
-        public async Task<UserManagerResponseModel> ConfirmEmailAsync(string uid, string token)
+        public async Task<ResponseModel> ConfirmEmailAsync(string uid, string token)
         {
-            UserManagerResponseModel response = new UserManagerResponseModel();
+            ResponseModel response = new ResponseModel();
             var user = await _userManager.FindByIdAsync(uid);
             if (user == null)
             {

@@ -16,6 +16,6 @@ namespace RecipeAPI.Models
         [NotMapped]
         public string Token { get; set; }
         [NotMapped]
-        public UserManagerResponseModel Response { get; set; }
+        public ResponseModel Response { get; set; }
     }
 }

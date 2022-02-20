@@ -7,7 +7,7 @@ namespace RecipeAPI.Repositories.IRepositories
     {
         bool IsUniqueUser(string username);
         Task<UserModel> LoginAsync(string username, string password);
-        Task<UserModel> RegisterAsync(UserRegistrationModel user);
-        Task<UserManagerResponseModel> ConfirmEmailAsync(string uid, string token);
+        Task<ResponseModel> RegisterAsync(UserRegistrationModel user);
+        Task<ResponseModel> ConfirmEmailAsync(string uid, string token);
     }
 }

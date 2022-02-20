@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RecipeAPI.Models
 {
-    public class UserManagerResponseModel
+    public class ResponseModel
     {
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
