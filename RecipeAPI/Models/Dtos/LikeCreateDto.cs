@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Recipe.Models.Dtos
+namespace RecipeAPI.Models.Dtos
 {
     public class LikeCreateDto
     {

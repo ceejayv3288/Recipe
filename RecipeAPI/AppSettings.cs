@@ -1,4 +1,4 @@
-﻿namespace Recipe
+﻿namespace RecipeAPI
 {
     public class AppSettings
     {

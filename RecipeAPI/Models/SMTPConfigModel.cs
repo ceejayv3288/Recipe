@@ -1,4 +1,4 @@
-﻿namespace Recipe.Models
+﻿namespace RecipeAPI.Models
 {
     public class SMTPConfigModel
     {

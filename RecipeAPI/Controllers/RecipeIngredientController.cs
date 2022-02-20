@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Recipe.Models;
-using Recipe.Models.Dtos;
-using Recipe.Repositories.IRepositories;
+using RecipeAPI.Models;
+using RecipeAPI.Models.Dtos;
+using RecipeAPI.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Recipe.Controllers
+namespace RecipeAPI.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/recipeIngredients")]
@@ -78,7 +78,7 @@ namespace Recipe.Controllers
                 return StatusCode(404, ModelState);
             }
 
-            var recipeIngredientObj = _mapper.Map<RecipeIngredient>(recipeIngredientDto);
+            var recipeIngredientObj = _mapper.Map<RecipeIngredientModel>(recipeIngredientDto);
             if (!_recipeIngredientRepository.CreateRecipeIngredient(recipeIngredientObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when saving the record {recipeIngredientObj.Description}");
@@ -100,7 +100,7 @@ namespace Recipe.Controllers
                 return BadRequest(ModelState);
             }
 
-            var recipeIngredientObj = _mapper.Map<RecipeIngredient>(recipeIngredientDto);
+            var recipeIngredientObj = _mapper.Map<RecipeIngredientModel>(recipeIngredientDto);
             if (!_recipeIngredientRepository.UpdateRecipeIngredient(recipeIngredientObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {recipeIngredientObj.Description}");

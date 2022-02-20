@@ -1,7 +1,7 @@
-﻿using Recipe.Models;
+﻿using RecipeAPI.Models;
 using System.Collections.Generic;
 
-namespace Recipe.Repositories.IRepositories
+namespace RecipeAPI.Repositories.IRepositories
 {
     public interface IRecipeRepository
     {

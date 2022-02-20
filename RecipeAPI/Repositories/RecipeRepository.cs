@@ -1,10 +1,10 @@
-﻿using Recipe.Data;
-using Recipe.Models;
-using Recipe.Repositories.IRepositories;
+﻿using RecipeAPI.Data;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Recipe.Repositories
+namespace RecipeAPI.Repositories
 {
     public class RecipeRepository : IRecipeRepository
     {

@@ -1,8 +1,8 @@
-﻿using Recipe.Constants;
+﻿using RecipeAPI.Constants;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Recipe.Models.Dtos
+namespace RecipeAPI.Models.Dtos
 {
     public class RecipeDto
     {

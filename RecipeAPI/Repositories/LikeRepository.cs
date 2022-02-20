@@ -1,10 +1,10 @@
-﻿using Recipe.Data;
-using Recipe.Models;
-using Recipe.Repositories.IRepositories;
+﻿using RecipeAPI.Data;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Recipe.Repositories
+namespace RecipeAPI.Repositories
 {
     public class LikeRepository : ILikeRepository
     {
@@ -15,24 +15,24 @@ namespace Recipe.Repositories
             _db = db;
         }
 
-        public bool CreateLike(Like like)
+        public bool CreateLike(LikeModel like)
         {
             _db.Likes.Add(like);
             return Save();
         }
 
-        public bool DeleteLike(Like like)
+        public bool DeleteLike(LikeModel like)
         {
             _db.Likes.Remove(like);
             return Save();
         }
 
-        public Like GetLike(int likeId)
+        public LikeModel GetLike(int likeId)
         {
             return _db.Likes.FirstOrDefault(x => x.Id == likeId);
         }
 
-        public ICollection<Like> GetLikes()
+        public ICollection<LikeModel> GetLikes()
         {
             return _db.Likes.OrderBy(x => x.Recipe.Name).ToList();
         }
@@ -53,7 +53,7 @@ namespace Recipe.Repositories
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateLike(Like like)
+        public bool UpdateLike(LikeModel like)
         {
             _db.Likes.Update(like);
             return Save();

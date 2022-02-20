@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Recipe.Models
+namespace RecipeAPI.Models
 {
     public class UserRegistrationModel
     {   

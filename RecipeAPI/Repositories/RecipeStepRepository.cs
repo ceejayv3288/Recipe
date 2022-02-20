@@ -1,10 +1,10 @@
-﻿using Recipe.Data;
-using Recipe.Models;
-using Recipe.Repositories.IRepositories;
+﻿using RecipeAPI.Data;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Recipe.Repositories
+namespace RecipeAPI.Repositories
 {
     public class RecipeStepRepository : IRecipeStepRepository
     {
@@ -15,24 +15,24 @@ namespace Recipe.Repositories
             _db = db;
         }
 
-        public bool CreateRecipeStep(RecipeStep recipeStep)
+        public bool CreateRecipeStep(RecipeStepModel recipeStep)
         {
             _db.RecipeSteps.Add(recipeStep);
             return Save();
         }
 
-        public bool DeleteRecipeStep(RecipeStep recipeStep)
+        public bool DeleteRecipeStep(RecipeStepModel recipeStep)
         {
             _db.RecipeSteps.Remove(recipeStep);
             return Save();
         }
 
-        public RecipeStep GetRecipeStep(int recipeStepId)
+        public RecipeStepModel GetRecipeStep(int recipeStepId)
         {
             return _db.RecipeSteps.FirstOrDefault(x => x.Id == recipeStepId);
         }
 
-        public ICollection<RecipeStep> GetRecipeSteps()
+        public ICollection<RecipeStepModel> GetRecipeSteps()
         {
             return _db.RecipeSteps.OrderBy(x => x.Recipe.Name).ToList();
         }
@@ -53,7 +53,7 @@ namespace Recipe.Repositories
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateRecipeStep(RecipeStep recipeStep)
+        public bool UpdateRecipeStep(RecipeStepModel recipeStep)
         {
             _db.RecipeSteps.Update(recipeStep);
             return Save();

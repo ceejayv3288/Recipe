@@ -1,17 +1,17 @@
-﻿using Recipe.Models;
+﻿using RecipeAPI.Models;
 using System.Collections.Generic;
 
-namespace Recipe.Repositories.IRepositories
+namespace RecipeAPI.Repositories.IRepositories
 {
     public interface ILikeRepository
     {
-        ICollection<Like> GetLikes();
-        Like GetLike(int likeId);
+        ICollection<LikeModel> GetLikes();
+        LikeModel GetLike(int likeId);
         bool LikeExists(string name);
         bool LikeExists(int id);
-        bool CreateLike(Like like);
-        bool UpdateLike(Like like);
-        bool DeleteLike(Like like);
+        bool CreateLike(LikeModel like);
+        bool UpdateLike(LikeModel like);
+        bool DeleteLike(LikeModel like);
         bool Save();
     }
 }

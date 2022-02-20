@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Recipe.Models
+namespace RecipeAPI.Models
 {
-    public class Like
+    public class LikeModel
     {
         [Key]
         public int Id { get; set; }

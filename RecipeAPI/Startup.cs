@@ -13,13 +13,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Recipe.Data;
-using Recipe.Mappers.RecipeMapper;
-using Recipe.Models;
-using Recipe.Repositories;
-using Recipe.Repositories.IRepositories;
-using Recipe.Services;
-using Recipe.Services.IServices;
+using RecipeAPI.Data;
+using RecipeAPI.Mappers.RecipeMapper;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories;
+using RecipeAPI.Repositories.IRepositories;
+using RecipeAPI.Services;
+using RecipeAPI.Services.IServices;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recipe
+namespace RecipeAPI
 {
     public class Startup
     {
@@ -47,7 +47,7 @@ namespace Recipe
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<UserModel, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
                 options.Password.RequireDigit = true;

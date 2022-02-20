@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Recipe.Models;
-using Recipe.Models.Dtos;
-using Recipe.Repositories.IRepositories;
+using RecipeAPI.Models;
+using RecipeAPI.Models.Dtos;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 
-namespace Recipe.Controllers
+namespace RecipeAPI.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/recipes")]

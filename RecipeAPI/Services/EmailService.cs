@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using Recipe.Constants;
-using Recipe.Models;
-using Recipe.Services.IServices;
+using RecipeAPI.Constants;
+using RecipeAPI.Models;
+using RecipeAPI.Services.IServices;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -9,18 +9,19 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recipe.Services
+namespace RecipeAPI.Services
 {
     public class EmailService : IEmailService
     {
         private readonly SMTPConfigModel _smtpConfig;
+        private readonly SendGridConfigModel _sendGridConfig;
 
         public EmailService(IOptions<SMTPConfigModel> smtpConfig)
         {
             _smtpConfig = smtpConfig.Value;
         }
 
-        public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
+        public async Task SendEmailForEmailConfirmation(UserEmailOptionsModel userEmailOptions)
         {
             userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, This is confirmation link for your registration.", userEmailOptions.PlaceHolders);
 
@@ -29,7 +30,7 @@ namespace Recipe.Services
             await SendEmail(userEmailOptions);
         }
 
-        public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
+        public async Task SendEmailForForgotPassword(UserEmailOptionsModel userEmailOptions)
         {
             userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, reset your password.", userEmailOptions.PlaceHolders);
 
@@ -38,7 +39,7 @@ namespace Recipe.Services
             await SendEmail(userEmailOptions);
         }
 
-        private async Task SendEmail(UserEmailOptions userEmailOptions)
+        private async Task SendEmail(UserEmailOptionsModel userEmailOptions)
         {
             MailMessage mail = new MailMessage
             {

@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Recipe.Models
+namespace RecipeAPI.Models
 {
-    public class User : IdentityUser
+    public class UserModel : IdentityUser
     {
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -16,6 +16,6 @@ namespace Recipe.Models
         [NotMapped]
         public string Token { get; set; }
         [NotMapped]
-        public UserManagerResponse Response { get; set; }
+        public UserManagerResponseModel Response { get; set; }
     }
 }

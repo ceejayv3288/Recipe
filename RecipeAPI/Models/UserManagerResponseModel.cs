@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Recipe.Models
+namespace RecipeAPI.Models
 {
-    public class UserManagerResponse
+    public class UserManagerResponseModel
     {
         public string Message { get; set; }
         public bool IsSuccess { get; set; }

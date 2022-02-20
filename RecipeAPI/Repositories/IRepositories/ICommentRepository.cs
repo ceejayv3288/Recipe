@@ -1,17 +1,17 @@
-﻿using Recipe.Models;
+﻿using RecipeAPI.Models;
 using System.Collections.Generic;
 
-namespace Recipe.Repositories.IRepositories
+namespace RecipeAPI.Repositories.IRepositories
 {
     public interface ICommentRepository
     {
-        ICollection<Comment> GetComments();
-        Comment GetComment(int commentId);
+        ICollection<CommentModel> GetComments();
+        CommentModel GetComment(int commentId);
         bool CommentExists(string description);
         bool CommentExists(int id);
-        bool CreateComment(Comment comment);
-        bool UpdateComment(Comment comment);
-        bool DeleteComment(Comment comment);
+        bool CreateComment(CommentModel comment);
+        bool UpdateComment(CommentModel comment);
+        bool DeleteComment(CommentModel comment);
         bool Save();
     }
 }

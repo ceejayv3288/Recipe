@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Recipe.Migrations
+namespace RecipeAPI.Migrations
 {
     public partial class InitialPushToDb : Migration
     {

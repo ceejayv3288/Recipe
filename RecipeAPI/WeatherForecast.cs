@@ -1,6 +1,6 @@
 using System;
 
-namespace Recipe
+namespace RecipeAPI
 {
     public class WeatherForecast
     {

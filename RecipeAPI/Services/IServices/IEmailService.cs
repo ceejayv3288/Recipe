@@ -1,12 +1,12 @@
-﻿using Recipe.Models;
+﻿using RecipeAPI.Models;
 using System.Threading.Tasks;
 
-namespace Recipe.Services.IServices
+namespace RecipeAPI.Services.IServices
 {
     public interface IEmailService
     {
-        Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions);
+        Task SendEmailForEmailConfirmation(UserEmailOptionsModel userEmailOptions);
 
-        Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions);
+        Task SendEmailForForgotPassword(UserEmailOptionsModel userEmailOptions);
     }
 }

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Recipe.Data;
+using RecipeAPI.Data;
 
-namespace Recipe.Migrations
+namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20220218161841_InitialPushToDb")]

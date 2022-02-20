@@ -1,4 +1,4 @@
-﻿namespace Recipe.Constants
+﻿namespace RecipeAPI.Constants
 {
     public class AppConstants
     {

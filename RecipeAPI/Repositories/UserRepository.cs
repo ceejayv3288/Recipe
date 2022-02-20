@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Recipe.Data;
-using Recipe.Models;
-using Recipe.Repositories.IRepositories;
-using Recipe.Services.IServices;
+using RecipeAPI.Data;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories.IRepositories;
+using RecipeAPI.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,19 +19,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Recipe.Repositories
+namespace RecipeAPI.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _db;
         private readonly AppSettings _appSettings;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
 
-        public UserRepository(ApplicationDbContext db, IOptions<AppSettings> appsettings, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IEmailService emailService, IConfiguration configuration)
+        public UserRepository(ApplicationDbContext db, IOptions<AppSettings> appsettings, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IMapper mapper, IEmailService emailService, IConfiguration configuration)
         {
             _db = db;
             _appSettings = appsettings.Value;
@@ -42,14 +42,14 @@ namespace Recipe.Repositories
             _configuration = configuration;
         }
 
-        public async Task<User> LoginAsync(string username, string password)
+        public async Task<UserModel> LoginAsync(string username, string password)
         {
             var user = await _userManager.FindByNameAsync(username);
             if (user == null)
             {
-                return new User
+                return new UserModel
                 {
-                    Response = new UserManagerResponse
+                    Response = new UserManagerResponseModel
                     {
                         Message = "There is no user with that username",
                         IsSuccess = false
@@ -58,9 +58,9 @@ namespace Recipe.Repositories
             }
             var result = await _userManager.CheckPasswordAsync(user, password);
             if (!result)
-                return new User
+                return new UserModel
                 {
-                    Response = new UserManagerResponse
+                    Response = new UserManagerResponseModel
                     {
                         Message = "Invalid password",
                         IsSuccess = false,
@@ -85,7 +85,7 @@ namespace Recipe.Repositories
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
             user.PasswordHash = string.Empty;
-            user.Response = new UserManagerResponse { IsSuccess = true, Message = "Login Successful." };
+            user.Response = new UserManagerResponseModel { IsSuccess = true, Message = "Login Successful." };
 
             return user;
         }
@@ -100,20 +100,20 @@ namespace Recipe.Repositories
             return false;
         }
 
-        public async Task<User> RegisterAsync(UserRegistrationModel user)
+        public async Task<UserModel> RegisterAsync(UserRegistrationModel user)
         {
-            var userObj = _mapper.Map<User>(user);
+            var userObj = _mapper.Map<UserModel>(user);
             var result = await _userManager.CreateAsync(userObj, user.Password);
             if (!result.Succeeded)
             {
-                return new User { Response = new UserManagerResponse { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) } };
+                return new UserModel { Response = new UserManagerResponseModel { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) } };
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userObj);
             string appDomain = _configuration.GetSection("Application:AppDomain").Value;
             string confirmationLink = _configuration.GetSection("Application:EmailConfirmation").Value;
 
-            UserEmailOptions options = new UserEmailOptions
+            UserEmailOptionsModel options = new UserEmailOptionsModel
             {
                 ToEmails = new List<string> { user.Email },
                 PlaceHolders = new List<KeyValuePair<string, string>>()
@@ -128,9 +128,9 @@ namespace Recipe.Repositories
             return userObj;
         }
 
-        public async Task<UserManagerResponse> ConfirmEmailAsync(string uid, string token)
+        public async Task<UserManagerResponseModel> ConfirmEmailAsync(string uid, string token)
         {
-            UserManagerResponse response = new UserManagerResponse();
+            UserManagerResponseModel response = new UserManagerResponseModel();
             var user = await _userManager.FindByIdAsync(uid);
             if (user == null)
             {

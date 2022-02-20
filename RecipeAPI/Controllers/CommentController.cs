@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Recipe.Models;
-using Recipe.Models.Dtos;
-using Recipe.Repositories.IRepositories;
+using RecipeAPI.Models;
+using RecipeAPI.Models.Dtos;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 
-namespace Recipe.Controllers
+namespace RecipeAPI.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/comments")]
@@ -75,7 +75,7 @@ namespace Recipe.Controllers
                 return StatusCode(404, ModelState);
             }
 
-            var commentObj = _mapper.Map<Comment>(commentDto);
+            var commentObj = _mapper.Map<CommentModel>(commentDto);
             if (!_commentRepository.CreateComment(commentObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when saving the record {commentObj.Description}");
@@ -97,7 +97,7 @@ namespace Recipe.Controllers
                 return BadRequest(ModelState);
             }
 
-            var commentObj = _mapper.Map<Comment>(commentDto);
+            var commentObj = _mapper.Map<CommentModel>(commentDto);
             if (!_commentRepository.UpdateComment(commentObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {commentObj.Description}");

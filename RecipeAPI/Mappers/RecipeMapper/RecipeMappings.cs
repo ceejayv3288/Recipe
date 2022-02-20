@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Recipe.Models;
-using Recipe.Models.Dtos;
+using RecipeAPI.Models;
+using RecipeAPI.Models.Dtos;
 
-namespace Recipe.Mappers.RecipeMapper
+namespace RecipeAPI.Mappers.RecipeMapper
 {
     public class RecipeMappings : Profile
     {
@@ -10,16 +10,16 @@ namespace Recipe.Mappers.RecipeMapper
         {
             CreateMap<RecipeModel, RecipeDto>().ReverseMap();
             CreateMap<RecipeModel, RecipeCreateDto>().ReverseMap();
-            CreateMap<Comment, CommentDto>().ReverseMap();
-            CreateMap<Comment, CommentCreateDto>().ReverseMap();
-            CreateMap<Comment, CommentUpdateDto>().ReverseMap();
-            CreateMap<Like, LikeDto>().ReverseMap();
-            CreateMap<Like, LikeCreateDto>().ReverseMap();
-            CreateMap<Like, LikeUpdateDto>().ReverseMap();
-            CreateMap<RecipeStep, RecipeStepDto>().ReverseMap();
-            CreateMap<RecipeStep, RecipeStepCreateDto>().ReverseMap();
-            CreateMap<RecipeStep, RecipeStepUpdateDto>().ReverseMap();
-            CreateMap<User, UserRegistrationModel>().ReverseMap();
+            CreateMap<CommentModel, CommentDto>().ReverseMap();
+            CreateMap<CommentModel, CommentCreateDto>().ReverseMap();
+            CreateMap<CommentModel, CommentUpdateDto>().ReverseMap();
+            CreateMap<LikeModel, LikeDto>().ReverseMap();
+            CreateMap<LikeModel, LikeCreateDto>().ReverseMap();
+            CreateMap<LikeModel, LikeUpdateDto>().ReverseMap();
+            CreateMap<RecipeStepModel, RecipeStepDto>().ReverseMap();
+            CreateMap<RecipeStepModel, RecipeStepCreateDto>().ReverseMap();
+            CreateMap<RecipeStepModel, RecipeStepUpdateDto>().ReverseMap();
+            CreateMap<UserModel, UserRegistrationModel>().ReverseMap();
         }
     }
 }

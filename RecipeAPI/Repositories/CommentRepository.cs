@@ -1,10 +1,10 @@
-﻿using Recipe.Data;
-using Recipe.Models;
-using Recipe.Repositories.IRepositories;
+﻿using RecipeAPI.Data;
+using RecipeAPI.Models;
+using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Recipe.Repositories
+namespace RecipeAPI.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
@@ -26,24 +26,24 @@ namespace Recipe.Repositories
             return _db.Comments.Any(x => x.Id == id);
         }
 
-        public bool CreateComment(Comment comment)
+        public bool CreateComment(CommentModel comment)
         {
             _db.Comments.Add(comment);
             return Save();
         }
 
-        public bool DeleteComment(Comment comment)
+        public bool DeleteComment(CommentModel comment)
         {
             _db.Comments.Remove(comment);
             return Save();
         }
 
-        public Comment GetComment(int commentId)
+        public CommentModel GetComment(int commentId)
         {
             return _db.Comments.FirstOrDefault(x => x.Id == commentId);
         }
 
-        public ICollection<Comment> GetComments()
+        public ICollection<CommentModel> GetComments()
         {
             return _db.Comments.OrderBy(x => x.Description).ToList();
         }
@@ -53,7 +53,7 @@ namespace Recipe.Repositories
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateComment(Comment comment)
+        public bool UpdateComment(CommentModel comment)
         {
             _db.Comments.Update(comment);
             return Save();

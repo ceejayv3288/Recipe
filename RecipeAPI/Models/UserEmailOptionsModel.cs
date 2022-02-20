@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Recipe.Models
+namespace RecipeAPI.Models
 {
-    public class UserEmailOptions
+    public class UserEmailOptionsModel
     {
         public List<string> ToEmails { get; set; }
         public string Subject { get; set; }
