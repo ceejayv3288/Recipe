@@ -81,6 +81,7 @@ namespace RecipeAPI
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
+            services.Configure<SendGridConfigModel>(Configuration.GetSection("SendGrid"));
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             var issuer = appSettings.Issuer;
