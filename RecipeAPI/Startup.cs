@@ -133,7 +133,7 @@ namespace RecipeAPI
                 {
                     options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json",
                         desc.GroupName.ToUpperInvariant());
-                    options.RoutePrefix = "";
+                    options.RoutePrefix = "swagger";
                 }
             });
 
