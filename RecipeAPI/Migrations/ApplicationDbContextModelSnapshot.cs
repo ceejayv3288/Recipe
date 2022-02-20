@@ -222,7 +222,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Comment", b =>
+            modelBuilder.Entity("RecipeAPI.Models.CommentModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -252,7 +252,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Like", b =>
+            modelBuilder.Entity("RecipeAPI.Models.LikeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -281,7 +281,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeIngredient", b =>
+            modelBuilder.Entity("RecipeAPI.Models.RecipeIngredientModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,7 +310,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("RecipeIngredients");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeModel", b =>
+            modelBuilder.Entity("RecipeAPI.Models.RecipeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -345,7 +345,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeStep", b =>
+            modelBuilder.Entity("RecipeAPI.Models.RecipeStepModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -377,7 +377,7 @@ namespace RecipeAPI.Migrations
                     b.ToTable("RecipeSteps");
                 });
 
-            modelBuilder.Entity("Recipe.Models.User", b =>
+            modelBuilder.Entity("RecipeAPI.Models.UserModel", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -404,7 +404,7 @@ namespace RecipeAPI.Migrations
 
                     b.ToTable("Users");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator().HasValue("UserModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,9 +458,9 @@ namespace RecipeAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Recipe.Models.Comment", b =>
+            modelBuilder.Entity("RecipeAPI.Models.CommentModel", b =>
                 {
-                    b.HasOne("Recipe.Models.RecipeModel", "Recipe")
+                    b.HasOne("RecipeAPI.Models.RecipeModel", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,9 +469,9 @@ namespace RecipeAPI.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Like", b =>
+            modelBuilder.Entity("RecipeAPI.Models.LikeModel", b =>
                 {
-                    b.HasOne("Recipe.Models.RecipeModel", "Recipe")
+                    b.HasOne("RecipeAPI.Models.RecipeModel", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -480,9 +480,9 @@ namespace RecipeAPI.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeIngredient", b =>
+            modelBuilder.Entity("RecipeAPI.Models.RecipeIngredientModel", b =>
                 {
-                    b.HasOne("Recipe.Models.RecipeModel", "Recipe")
+                    b.HasOne("RecipeAPI.Models.RecipeModel", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -491,9 +491,9 @@ namespace RecipeAPI.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeStep", b =>
+            modelBuilder.Entity("RecipeAPI.Models.RecipeStepModel", b =>
                 {
-                    b.HasOne("Recipe.Models.RecipeModel", "Recipe")
+                    b.HasOne("RecipeAPI.Models.RecipeModel", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
