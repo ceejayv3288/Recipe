@@ -97,6 +97,7 @@ namespace RecipeAPI.Repositories
         public async Task<ResponseModel> RegisterAsync(UserRegistrationModel user)
         {
             var userObj = _mapper.Map<UserModel>(user);
+            userObj.Role = "Member";
             var result = await _userManager.CreateAsync(userObj, user.Password);
             if (!result.Succeeded)
                 return new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = result.Errors.FirstOrDefault().Description, Errors = result.Errors.Select(e => e.Description) };
