@@ -15,7 +15,5 @@ namespace RecipeAPI.Models
         public DateTime DateUpdated { get; set; }
         [NotMapped]
         public string Token { get; set; }
-        [NotMapped]
-        public ResponseModel Response { get; set; }
     }
 }

@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RecipeAPI.Models
+﻿namespace RecipeAPI.Models
 {
     public class ResponseModel
     {
+        public string Type { get; set; }
+
         public string Message { get; set; }
-        public bool IsSuccess { get; set; }
-        public IEnumerable<string> Errors { get; set; }
-        public DateTime? ExpireDate { get; set; }
+
+        public int StatusCode { get; set; }
+
+        public string ClientRequest { get; set; }
+
+        public string Action { get; set; }
+
+        public dynamic Errors { get; set; }
     }
 }

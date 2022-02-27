@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,50 +43,34 @@ namespace RecipeAPI.Repositories
             _configuration = configuration;
         }
 
-        public async Task<UserModel> LoginAsync(string username, string password)
+        public async Task<ResponseModel> AuthenticateAsync(string username, string password)
         {
             var userResult = await _userManager.FindByNameAsync(username);
             if (userResult == null)
-            {
-                return new UserModel
-                {
-                    Response = new ResponseModel
-                    {
-                        Message = "There is no user with that username.",
-                        IsSuccess = false
-                    }
-                };
-            }
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.Unauthorized, Message = "There is no user with that username." };
             var checkPasswordResult = await _userManager.CheckPasswordAsync(userResult, password);
             if (!checkPasswordResult)
-                return new UserModel
-                {
-                    Response = new ResponseModel
-                    {
-                        Message = "Invalid password.",
-                        IsSuccess = false,
-                    }
-                };
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.Unauthorized, Message = "Invalid password." };
             var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(userResult);
             if (!isEmailConfirmed)
-                return new UserModel
-                {
-                    Response = new ResponseModel
-                    {
-                        Message = "Email is not confirmed.",
-                        IsSuccess = false,
-                    }
-                };
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.Unauthorized, Message = "Email is not confirmed." };
 
-            await _signInManager.PasswordSignInAsync(userResult.UserName, password, true, false);
+            return new ResponseModel { StatusCode = (int)HttpStatusCode.OK };
+        }
+
+        public async Task<UserModel> LoginAsync(string username, string password)
+        {
+            var userResponse = await _userManager.FindByNameAsync(username);
+
+            await _signInManager.PasswordSignInAsync(userResponse.UserName, password, true, false);
             //if user was found, generate a jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, userResult.Id.ToString()),
-                    new Claim(ClaimTypes.Role, userResult.Role)
+                    new Claim(ClaimTypes.Name, userResponse.Id.ToString()),
+                    new Claim(ClaimTypes.Role, userResponse.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -93,11 +78,10 @@ namespace RecipeAPI.Repositories
                 Audience = _configuration.GetSection("AppSettings:Audience").Value
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            userResult.Token = tokenHandler.WriteToken(token);
-            userResult.PasswordHash = string.Empty;
-            userResult.Response = new ResponseModel { IsSuccess = true, Message = "Login Successful." };
+            userResponse.Token = tokenHandler.WriteToken(token);
+            userResponse.PasswordHash = string.Empty;
 
-            return userResult;
+            return userResponse;
         }
 
         public bool IsUniqueUser(string username)
@@ -115,9 +99,7 @@ namespace RecipeAPI.Repositories
             var userObj = _mapper.Map<UserModel>(user);
             var result = await _userManager.CreateAsync(userObj, user.Password);
             if (!result.Succeeded)
-            {
-                return new ResponseModel { IsSuccess = false, Errors = result.Errors.Select(e => e.Description) };
-            }
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = result.Errors.FirstOrDefault().Description, Errors = result.Errors.Select(e => e.Description) };
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userObj);
             string appDomain = _configuration.GetSection("Application:AppDomain").Value;
@@ -135,31 +117,20 @@ namespace RecipeAPI.Repositories
             };
             await _emailService.SendEmailForEmailConfirmation(options);
 
-            return new ResponseModel { IsSuccess = true, Message = "Please check you email to complete the registration." };
+            return new ResponseModel { StatusCode = (int)HttpStatusCode.OK, Message = "Please check you email to complete the registration." };
         }
 
         public async Task<ResponseModel> ConfirmEmailAsync(string uid, string token)
         {
-            ResponseModel response = new ResponseModel();
             var user = await _userManager.FindByIdAsync(uid);
             if (user == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "User not found";
-                return response;
-            }
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = "User not found" };
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (!result.Succeeded)
-            {
-                response.IsSuccess = false;
-                response.Errors = result.Errors.Select(e => e.Description);
-                return response;
-            }
-            response.IsSuccess = true;
-            response.Message = "Email confirmed!";
+                return new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = result.Errors.FirstOrDefault().Description, Errors = result.Errors.Select(e => e.Description) };
 
-            return response;
+            return new ResponseModel { StatusCode = (int)HttpStatusCode.OK, Message = "Email confirmed!" };
         }
     }
 }

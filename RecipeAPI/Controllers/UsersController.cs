@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -28,13 +29,15 @@ namespace RecipeAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] AuthenticationModel model)
         {
-            var user = await _userRepository.LoginAsync(model.Username, model.Password);
-            if (user == null)
-                return Unauthorized(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Error while login" } });
-            if (!user.Response.IsSuccess)
-                return Unauthorized(user);
+            var authResponse = await _userRepository.AuthenticateAsync(model.Username, model.Password);
+            if (authResponse.StatusCode != (int)HttpStatusCode.OK)
+                return Unauthorized(authResponse);
 
-            return Ok(user);
+            var response = await _userRepository.LoginAsync(model.Username, model.Password);
+            if (response == null)
+                return Unauthorized(new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = "Error while login" });
+
+            return Ok(response);
         }
 
         [AllowAnonymous]
@@ -43,16 +46,16 @@ namespace RecipeAPI.Controllers
         {
             bool ifUserNameUnique = _userRepository.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)
-                return BadRequest(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Username already exist" } });
+                return BadRequest(new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = "Username already exist" });
 
             var response = await _userRepository.RegisterAsync(model);
             if (response == null)
-                return BadRequest(new UserModel { Response = new ResponseModel { IsSuccess = false, Message = "Error while registering" } });
+                return BadRequest(new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = "Error while registering" });
 
-            if (response.IsSuccess)
+            if (response.StatusCode == (int)HttpStatusCode.OK)
                 return Ok(response);
             else
-                return BadRequest(response);
+                return BadRequest(new ResponseModel { StatusCode = (int)HttpStatusCode.BadRequest, Message = response.Message});
         }
 
         [AllowAnonymous]
@@ -69,9 +72,9 @@ namespace RecipeAPI.Controllers
                 return Ok();
 
             HttpUtility.UrlDecode(token);
-            var result = await _userRepository.ConfirmEmailAsync(user.Id, token);
+            var response = await _userRepository.ConfirmEmailAsync(user.Id, token);
             var body = System.IO.File.ReadAllText(string.Format("Templates/EmailConfirmed.html"));
-            if (result.IsSuccess)
+            if (response.StatusCode == (int)HttpStatusCode.OK)
             {
                 return new ContentResult
                 {
@@ -80,7 +83,7 @@ namespace RecipeAPI.Controllers
                     Content = body
                 };
             }
-            return BadRequest(result);
+            return BadRequest(response);
         }
     }
 }
