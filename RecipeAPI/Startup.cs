@@ -101,7 +101,9 @@ namespace RecipeAPI
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidIssuer = issuer,
-                    ValidAudience = audience
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

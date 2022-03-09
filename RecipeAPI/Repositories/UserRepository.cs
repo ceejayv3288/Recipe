@@ -72,7 +72,7 @@ namespace RecipeAPI.Repositories
                     new Claim(ClaimTypes.Name, userResponse.Id.ToString()),
                     new Claim(ClaimTypes.Role, userResponse.Role)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _configuration.GetSection("AppSettings:Issuer").Value,
                 Audience = _configuration.GetSection("AppSettings:Audience").Value
