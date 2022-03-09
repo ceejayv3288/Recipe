@@ -1,4 +1,5 @@
-﻿using RecipeAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Data;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -29,12 +30,17 @@ namespace RecipeAPI.Repositories
 
         public RecipeStepModel GetRecipeStep(int recipeStepId)
         {
-            return _db.RecipeSteps.FirstOrDefault(x => x.Id == recipeStepId);
+            return _db.RecipeSteps.Include(c => c.Recipe).FirstOrDefault(x => x.Id == recipeStepId);
         }
 
         public ICollection<RecipeStepModel> GetRecipeSteps()
         {
-            return _db.RecipeSteps.OrderBy(x => x.Recipe.Name).ToList();
+            return _db.RecipeSteps.Include(c => c.Recipe).OrderBy(x => x.Recipe.Name).ToList();
+        }
+
+        public ICollection<RecipeStepModel> GetRecipeStepsByRecipeId(int recipeId)
+        {
+            return _db.RecipeSteps.Include(c => c.Recipe).Where(x => x.Recipe.Id == recipeId).OrderBy(x => x.Order).ToList();
         }
 
         public bool RecipeStepExists(string name, int stepId)

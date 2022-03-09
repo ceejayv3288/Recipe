@@ -40,6 +40,21 @@ namespace RecipeAPI.Controllers
             return Ok(objDto);
         }
 
+        [HttpGet("recipeId/{recipeId:int}", Name = "GetRecipeStepsByRecipeId")]
+        [ProducesResponseType(200, Type = typeof(List<RecipeStepDto>))]
+        public IActionResult GetRecipeStepsByRecipeId(int recipeId)
+        {
+            var objList = _recipeStepRepository.GetRecipeStepsByRecipeId(recipeId);
+
+            var objDto = new List<RecipeStepDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<RecipeStepDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
         [HttpGet("{recipeStepId:int}", Name = "GetRecipeStep")]
         [ProducesResponseType(200, Type = typeof(RecipeStepDto))]
         [ProducesResponseType(404)]
