@@ -1,4 +1,5 @@
-﻿using RecipeAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Data;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -40,12 +41,12 @@ namespace RecipeAPI.Repositories
 
         public CommentModel GetComment(int commentId)
         {
-            return _db.Comments.FirstOrDefault(x => x.Id == commentId);
+            return _db.Comments.Include(c => c.Recipe).Include(d => d.User).FirstOrDefault(x => x.Id == commentId);
         }
 
         public ICollection<CommentModel> GetComments()
         {
-            return _db.Comments.OrderBy(x => x.Description).ToList();
+            return _db.Comments.Include(c => c.Recipe).Include(d => d.User).OrderBy(x => x.Description).ToList();
         }
 
         public bool Save()

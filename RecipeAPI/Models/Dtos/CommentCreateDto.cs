@@ -6,13 +6,20 @@ namespace RecipeAPI.Models.Dtos
     public class CommentCreateDto
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+
+        public UserModel User { get; set; }
+
         [Required]
         public string Description { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         public DateTime DateUpdated { get; set; }
+
         [Required]
         public int RecipeId { get; set; }
+
         public RecipeModel Recipe { get; set; }
     }
 }
