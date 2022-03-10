@@ -8,8 +8,6 @@ namespace RecipeAPI.Models.Dtos
         [Required]
         public string UserId { get; set; }
 
-        public UserModel User { get; set; }
-
         [Required]
         public string Description { get; set; }
 
@@ -19,7 +17,5 @@ namespace RecipeAPI.Models.Dtos
 
         [Required]
         public int RecipeId { get; set; }
-
-        public RecipeModel Recipe { get; set; }
     }
 }

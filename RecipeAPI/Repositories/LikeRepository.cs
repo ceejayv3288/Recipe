@@ -1,4 +1,5 @@
-﻿using RecipeAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Data;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -29,12 +30,12 @@ namespace RecipeAPI.Repositories
 
         public LikeModel GetLike(int likeId)
         {
-            return _db.Likes.FirstOrDefault(x => x.Id == likeId);
+            return _db.Likes.Include(c => c.Recipe).Include(d => d.User).FirstOrDefault(x => x.Id == likeId);
         }
 
         public ICollection<LikeModel> GetLikes()
         {
-            return _db.Likes.OrderBy(x => x.Recipe.Name).ToList();
+            return _db.Likes.Include(c => c.Recipe).Include(d => d.User).OrderBy(x => x.Recipe.Name).ToList();
         }
 
         public bool LikeExists(string name)
