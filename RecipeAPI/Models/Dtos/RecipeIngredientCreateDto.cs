@@ -10,11 +10,17 @@ namespace RecipeAPI.Models.Dtos
     {
         [Required]
         public int Order { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         public DateTime DateUpdated { get; set; }
+
         [Required]
         public int RecipeId { get; set; }
+
         public RecipeModel Recipe { get; set; }
     }
 }

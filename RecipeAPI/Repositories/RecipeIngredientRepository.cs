@@ -1,4 +1,5 @@
-﻿using RecipeAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Data;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
 using System;
@@ -31,12 +32,12 @@ namespace RecipeAPI.Repositories
 
         public ICollection<RecipeIngredientModel> GetRecipeIngredients()
         {
-            return _db.RecipeIngredients.OrderBy(x => x.Recipe.Name).ToList();
+            return _db.RecipeIngredients.Include(c => c.Recipe).OrderBy(x => x.Recipe.Name).ToList();
         }
 
         public RecipeIngredientModel GetRecipeIngredient(int ingredientId)
         {
-            return _db.RecipeIngredients.FirstOrDefault(x => x.Id == ingredientId);
+            return _db.RecipeIngredients.Include(c => c.Recipe).FirstOrDefault(x => x.Id == ingredientId);
         }
 
         public bool RecipeIngredientExists(string name, int ingredientId)
