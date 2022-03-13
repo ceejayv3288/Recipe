@@ -61,5 +61,10 @@ namespace RecipeAPI.Repositories
             _db.RecipeIngredients.Update(recipeIngredient);
             return Save();
         }
+
+        public ICollection<RecipeIngredientModel> GetRecipeIngredientsByRecipeId(int recipeId)
+        {
+            return _db.RecipeIngredients.Include(c => c.Recipe).Where(r => r.Recipe.Id == recipeId).OrderBy(x => x.Recipe.Name).ToList();
+        }
     }
 }

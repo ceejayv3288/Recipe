@@ -9,12 +9,21 @@ namespace RecipeAPI.Repositories.IRepositories
     public interface IRecipeIngredientRepository
     {
         ICollection<RecipeIngredientModel> GetRecipeIngredients();
+
+        ICollection<RecipeIngredientModel> GetRecipeIngredientsByRecipeId(int recipeId);
+
         RecipeIngredientModel GetRecipeIngredient(int ingredientId);
+
         bool RecipeIngredientExists(string name, int ingredientId);
+
         bool RecipeIngredientExists(int id);
+
         bool CreateRecipeIngredient(RecipeIngredientModel recipeIngredient);
+
         bool UpdateRecipeIngredient(RecipeIngredientModel recipeIngredient);
+
         bool DeleteRecipeIngredient(RecipeIngredientModel recipeIngredient);
+
         bool Save();
     }
 }
