@@ -6,7 +6,6 @@ namespace RecipeAPI.Models.Dtos
 {
     public class RecipeCreateDto
     {
-        [Required]
         public string UserId { get; set; }
 
         [Required]

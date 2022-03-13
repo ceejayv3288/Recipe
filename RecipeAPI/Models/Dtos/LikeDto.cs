@@ -7,7 +7,6 @@ namespace RecipeAPI.Models.Dtos
     {
         public int Id { get; set; }
 
-        [Required]
         public string UserId { get; set; }
 
         public UserModel User { get; set; }
@@ -19,7 +18,6 @@ namespace RecipeAPI.Models.Dtos
 
         public DateTime DateUpdated { get; set; }
 
-        [Required]
         public int RecipeId { get; set; }
 
         public RecipeModel Recipe { get; set; }

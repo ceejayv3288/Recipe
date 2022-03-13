@@ -5,7 +5,6 @@ namespace RecipeAPI.Models.Dtos
 {
     public class LikeCreateDto
     {
-        [Required]
         public string UserId { get; set; }
 
         [Required]
@@ -15,7 +14,6 @@ namespace RecipeAPI.Models.Dtos
 
         public DateTime DateUpdated { get; set; }
 
-        [Required]
         public int RecipeId { get; set; }
     }
 }

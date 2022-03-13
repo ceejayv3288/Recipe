@@ -9,7 +9,6 @@ namespace RecipeAPI.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]
@@ -22,7 +21,6 @@ namespace RecipeAPI.Models
 
         public DateTime DateUpdated { get; set; }
 
-        [Required]
         public int RecipeId { get; set; }
 
         [ForeignKey("RecipeId")]

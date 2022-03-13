@@ -18,7 +18,6 @@ namespace RecipeAPI.Models.Dtos
 
         public DateTime DateUpdated { get; set; }
 
-        [Required]
         public int RecipeId { get; set; }
 
         public RecipeModel Recipe { get; set; }

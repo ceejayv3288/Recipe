@@ -21,7 +21,6 @@ namespace RecipeAPI.Models
 
         public DateTime DateUpdated { get; set; }
 
-        [Required]
         public int RecipeId { get; set; }
 
         [ForeignKey("RecipeId")]
