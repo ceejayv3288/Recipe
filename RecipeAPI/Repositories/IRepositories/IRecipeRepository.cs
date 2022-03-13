@@ -6,6 +6,7 @@ namespace RecipeAPI.Repositories.IRepositories
     public interface IRecipeRepository
     {
         ICollection<RecipeModel> GetRecipes();
+        ICollection<RecipeModel> GetRecipesByUser(string userId);
         RecipeModel GetRecipe(int recipeId);
         bool RecipeExists(string name);
         bool RecipeExists(int id);

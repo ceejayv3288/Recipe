@@ -38,6 +38,11 @@ namespace RecipeAPI.Repositories
             return _db.Recipes.Include(c => c.User).OrderBy(x => x.Name).ToList();
         }
 
+        public ICollection<RecipeModel> GetRecipesByUser(string userId)
+        {
+            return _db.Recipes.Include(c => c.User).Where(u => u.UserId == userId).OrderBy(x => x.Name).ToList();
+        }
+
         public bool RecipeExists(string name)
         {
             bool value = _db.Recipes.Any(x => x.Name.ToLower().Trim() == name.ToLower().Trim());

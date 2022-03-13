@@ -45,6 +45,25 @@ namespace RecipeAPI.Controllers
         }
 
         /// <summary>
+        /// Get list of recipes by user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("userId/{userId}", Name = "GetRecipesByUser")]
+        [ProducesResponseType(200, Type = typeof(List<RecipeDto>))]
+        public IActionResult GetRecipesByUser(string userId)
+        {
+            var objList = _recipeRepository.GetRecipesByUser(userId);
+
+            var objDto = new List<RecipeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<RecipeDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        /// <summary>
         /// Get individual recipe
         /// </summary>
         /// <param name="recipeId"> The Id of the recipe</param>
