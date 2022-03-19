@@ -8,6 +8,9 @@ namespace RecipeAPI.Models.Dtos
         public int Id { get; set; }
 
         [Required]
+        public int Order { get; set; }
+
+        [Required]
         public string Description { get; set; }
 
         public byte[] Image { get; set; }

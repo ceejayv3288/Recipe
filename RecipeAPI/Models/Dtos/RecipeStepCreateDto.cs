@@ -6,6 +6,9 @@ namespace RecipeAPI.Models.Dtos
     public class RecipeStepCreateDto
     {
         [Required]
+        public int Order { get; set; }
+
+        [Required]
         public string Description { get; set; }
 
         public byte[] Image { get; set; }
