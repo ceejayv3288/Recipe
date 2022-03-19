@@ -11,7 +11,7 @@ namespace RecipeAPI.Models.Dtos
         public int Id { get; set; }
 
         [Required]
-        public int Quantity { get; set; }
+        public string Quantity { get; set; }
 
         [Required]
         public string Description { get; set; }

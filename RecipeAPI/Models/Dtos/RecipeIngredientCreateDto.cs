@@ -9,7 +9,7 @@ namespace RecipeAPI.Models.Dtos
     public class RecipeIngredientCreateDto
     {
         [Required]
-        public int Quantity { get; set; }
+        public string Quantity { get; set; }
 
         [Required]
         public string Description { get; set; }
