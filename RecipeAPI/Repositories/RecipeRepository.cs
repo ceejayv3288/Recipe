@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Constants;
 using RecipeAPI.Data;
 using RecipeAPI.Models;
 using RecipeAPI.Repositories.IRepositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,6 +28,44 @@ namespace RecipeAPI.Repositories
         {
             _db.Recipes.Remove(recipe);
             return Save();
+        }
+
+        public ICollection<RecipeModel> GetPopularRecipes()
+        {
+            List<RecipeModel> popularRecipes = new List<RecipeModel>();
+
+            foreach (int type in Enum.GetValues(typeof(CourseTypeEnum)))
+            {
+                if (type == (int)CourseTypeEnum.None)
+                    continue;
+
+                popularRecipes.AddRange
+               (
+                   _db.Recipes.Include(c => c.User).Where(d => (int)d.CourseType == type)
+                   .Join(_db.Likes,
+                       recipe => recipe.Id,
+                       like => like.RecipeId,
+                       (recipe, like) => new RecipeModel
+                       {
+                           CourseType = recipe.CourseType,
+                           DateCreated = recipe.DateCreated,
+                           DateUpdated = recipe.DateUpdated,
+                           Description = recipe.Description,
+                           DurationInMin = recipe.DurationInMin,
+                           Id = recipe.Id,
+                           Image = recipe.Image,
+                           Name = recipe.Name,
+                           UserId = recipe.UserId,
+                           LikesCount = _db.Likes.Count(x => x.RecipeId == recipe.Id)
+                       }
+                   ).OrderByDescending(x => x.LikesCount)
+                   .Take(5)
+                   .Distinct()
+                   .ToList()
+               );
+            }
+
+            return popularRecipes;
         }
 
         public RecipeModel GetRecipe(int recipeId)

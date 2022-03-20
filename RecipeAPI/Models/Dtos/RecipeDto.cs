@@ -27,5 +27,7 @@ namespace RecipeAPI.Models.Dtos
         public DateTime DateUpdated { get; set; }
 
         public CourseTypeEnum CourseType { get; set; }
+
+        public int LikesCount { get; set; }
     }
 }

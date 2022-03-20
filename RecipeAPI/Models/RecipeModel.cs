@@ -31,5 +31,8 @@ namespace RecipeAPI.Models
         public DateTime DateUpdated { get; set; }
 
         public CourseTypeEnum CourseType { get; set; }
+
+        [NotMapped]
+        public int LikesCount { get; set; }
     }
 }

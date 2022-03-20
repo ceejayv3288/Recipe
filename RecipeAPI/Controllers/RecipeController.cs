@@ -26,6 +26,25 @@ namespace RecipeAPI.Controllers
         }
 
         /// <summary>
+        /// Get list of popular recipes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetPopularRecipes", Name = "GetPopularRecipes")]
+        [ProducesResponseType(200, Type = typeof(List<RecipeDto>))]
+        public IActionResult GetPopularRecipes()
+        {
+            var objList = _recipeRepository.GetPopularRecipes();
+
+            var objDto = new List<RecipeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<RecipeDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        /// <summary>
         /// Get list of recipes
         /// </summary>
         /// <returns></returns>
