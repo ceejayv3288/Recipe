@@ -40,29 +40,61 @@ namespace RecipeAPI.Repositories
                     continue;
 
                 popularRecipes.AddRange
-               (
-                   _db.Recipes.Include(c => c.User).Where(d => (int)d.CourseType == type)
-                   .Join(_db.Likes,
-                       recipe => recipe.Id,
-                       like => like.RecipeId,
-                       (recipe, like) => new RecipeModel
-                       {
-                           CourseType = recipe.CourseType,
-                           DateCreated = recipe.DateCreated,
-                           DateUpdated = recipe.DateUpdated,
-                           Description = recipe.Description,
-                           DurationInMin = recipe.DurationInMin,
-                           Id = recipe.Id,
-                           Image = recipe.Image,
-                           Name = recipe.Name,
-                           UserId = recipe.UserId,
-                           LikesCount = _db.Likes.Count(x => x.RecipeId == recipe.Id)
-                       }
-                   ).OrderByDescending(x => x.LikesCount)
-                   .Take(5)
-                   .Distinct()
-                   .ToList()
-               );
+                (
+                    _db.Recipes.Where(x => (int)x.CourseType == type).Select(r => new RecipeModel
+                    {
+                        CourseType = r.CourseType,
+                        DateCreated = r.DateCreated,
+                        DateUpdated = r.DateUpdated,
+                        Description = r.Description,
+                        DurationInMin = r.DurationInMin,
+                        Id = r.Id,
+                        Image = r.Image,
+                        Name = r.Name,
+                        UserId = r.UserId,
+                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id),
+                        CommentsCount = _db.Comments.Count(x => x.RecipeId == r.Id)
+                    })
+                    .OrderByDescending(y => y.LikesCount)
+                    .Take(5)
+                    .Distinct()
+                    .ToList()
+                );
+            }
+
+            return popularRecipes;
+        }
+
+        public ICollection<RecipeModel> GetPopularRecipesWithUserId(string userId)
+        {
+            List<RecipeModel> popularRecipes = new List<RecipeModel>();
+
+            foreach (int type in Enum.GetValues(typeof(CourseTypeEnum)))
+            {
+                if (type == (int)CourseTypeEnum.None)
+                    continue;
+
+                popularRecipes.AddRange
+                (
+                    _db.Recipes.Where(x => (int)x.CourseType == type).Select(r => new RecipeModel
+                    {
+                        CourseType = r.CourseType,
+                        DateCreated = r.DateCreated,
+                        DateUpdated = r.DateUpdated,
+                        Description = r.Description,
+                        DurationInMin = r.DurationInMin,
+                        Id = r.Id,
+                        Image = r.Image,
+                        Name = r.Name,
+                        UserId = r.UserId,
+                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id),
+                        CommentsCount = _db.Comments.Count(x => x.RecipeId == r.Id),
+                        IsLiked = _db.Likes.Any(x => x.User.Id == userId && x.Recipe.Id == r.Id)
+                    }).OrderByDescending(y => y.LikesCount)
+                    .Take(5)
+                    .Distinct()
+                    .ToList()
+                );
             }
 
             return popularRecipes;

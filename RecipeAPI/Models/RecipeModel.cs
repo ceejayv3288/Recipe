@@ -34,5 +34,11 @@ namespace RecipeAPI.Models
 
         [NotMapped]
         public int LikesCount { get; set; }
+
+        [NotMapped]
+        public int CommentsCount { get; set; }
+
+        [NotMapped]
+        public bool IsLiked { get; set; }
     }
 }

@@ -29,5 +29,9 @@ namespace RecipeAPI.Models.Dtos
         public CourseTypeEnum CourseType { get; set; }
 
         public int LikesCount { get; set; }
+
+        public int CommentsCount { get; set; }
+
+        public bool IsLiked { get; set; }
     }
 }

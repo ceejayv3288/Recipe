@@ -9,6 +9,8 @@ namespace RecipeAPI.Repositories.IRepositories
 
         ICollection<RecipeModel> GetPopularRecipes();
 
+        ICollection<RecipeModel> GetPopularRecipesWithUserId(string userId);
+
         ICollection<RecipeModel> GetRecipesByUser(string userId);
 
         RecipeModel GetRecipe(int recipeId);
