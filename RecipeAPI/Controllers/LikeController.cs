@@ -86,6 +86,51 @@ namespace RecipeAPI.Controllers
             return CreatedAtRoute("GetLike", new { likeId = likeObj.Id }, likeObj);
         }
 
+        [HttpGet("recipeId/{recipeId:int}", Name = "GetLikesByRecipeId")]
+        [ProducesResponseType(200, Type = typeof(List<LikeDto>))]
+        public IActionResult GetLikesByRecipeId(int recipeId)
+        {
+            var objList = _likeRepository.GetLikesByRecipeId(recipeId);
+
+            var objDto = new List<LikeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<LikeDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        [HttpGet("userId/{userId}", Name = "GetLikesByUserId")]
+        [ProducesResponseType(200, Type = typeof(List<LikeDto>))]
+        public IActionResult GetCommentsByUserId(string userId)
+        {
+            var objList = _likeRepository.GetLikesByUserId(userId);
+
+            var objDto = new List<LikeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<LikeDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        [HttpGet("{recipeId:int}/{userId}", Name = "GetLikesByRecipeAndUserId")]
+        [ProducesResponseType(200, Type = typeof(List<LikeDto>))]
+        public IActionResult GetCommentsByRecipeAndUserId(int recipeId, string userId)
+        {
+            var objList = _likeRepository.GetLikesByRecipeAndUserId(recipeId, userId);
+
+            var objDto = new List<LikeDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<LikeDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
         [HttpPut("{likeId:int}", Name = "UpdateLike")]
         [ProducesResponseType(204)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

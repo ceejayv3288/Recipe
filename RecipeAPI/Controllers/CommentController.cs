@@ -86,6 +86,51 @@ namespace RecipeAPI.Controllers
             return CreatedAtRoute("GetComment", new { commentId = commentObj.Id }, commentObj);
         }
 
+        [HttpGet("recipeId/{recipeId:int}", Name = "GetCommentsByRecipeId")]
+        [ProducesResponseType(200, Type = typeof(List<CommentDto>))]
+        public IActionResult GetCommentsByRecipeId(int recipeId)
+        {
+            var objList = _commentRepository.GetCommentsByRecipeId(recipeId);
+
+            var objDto = new List<CommentDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<CommentDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        [HttpGet("userId/{userId}", Name = "GetCommentsByUserId")]
+        [ProducesResponseType(200, Type = typeof(List<CommentDto>))]
+        public IActionResult GetCommentsByUserId(string userId)
+        {
+            var objList = _commentRepository.GetCommentsByUserId(userId);
+
+            var objDto = new List<CommentDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<CommentDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
+        [HttpGet("{recipeId:int}/{userId}", Name = "GetCommentsByRecipeAndUserId")]
+        [ProducesResponseType(200, Type = typeof(List<CommentDto>))]
+        public IActionResult GetCommentsByRecipeAndUserId(int recipeId, string userId)
+        {
+            var objList = _commentRepository.GetCommentsByRecipeAndUserId(recipeId, userId);
+
+            var objDto = new List<CommentDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<CommentDto>(obj));
+            }
+
+            return Ok(objDto);
+        }
+
         [HttpPut("{commentId:int}", Name = "UpdateComment")]
         [ProducesResponseType(204)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
