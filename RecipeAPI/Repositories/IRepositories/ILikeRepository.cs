@@ -11,7 +11,7 @@ namespace RecipeAPI.Repositories.IRepositories
 
         ICollection<LikeModel> GetLikesByUserId(string userId);
 
-        ICollection<LikeModel> GetLikesByRecipeAndUserId(int recipeId, string userId);
+        LikeModel GetLikesByRecipeAndUserId(int recipeId, string userId);
 
         LikeModel GetLike(int likeId);
 

@@ -120,13 +120,13 @@ namespace RecipeAPI.Controllers
         [ProducesResponseType(200, Type = typeof(List<LikeDto>))]
         public IActionResult GetCommentsByRecipeAndUserId(int recipeId, string userId)
         {
-            var objList = _likeRepository.GetLikesByRecipeAndUserId(recipeId, userId);
+            var obj = _likeRepository.GetLikesByRecipeAndUserId(recipeId, userId);
 
-            var objDto = new List<LikeDto>();
-            foreach (var obj in objList)
+            if (obj == null)
             {
-                objDto.Add(_mapper.Map<LikeDto>(obj));
+                return NotFound();
             }
+            var objDto = _mapper.Map<LikeDto>(obj);
 
             return Ok(objDto);
         }
@@ -149,7 +149,8 @@ namespace RecipeAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return NoContent();
+            //return NoContent();
+            return CreatedAtRoute("GetLike", new { likeId = likeObj.Id }, likeObj);
         }
 
         [HttpDelete("{likeId:int}", Name = "DeleteLike")]

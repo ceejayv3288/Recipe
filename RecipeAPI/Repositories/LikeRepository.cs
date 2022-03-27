@@ -38,9 +38,9 @@ namespace RecipeAPI.Repositories
             return _db.Likes.Include(c => c.Recipe).Include(d => d.User).OrderBy(x => x.Recipe.Name).ToList();
         }
 
-        public ICollection<LikeModel> GetLikesByRecipeAndUserId(int recipeId, string userId)
+        public LikeModel GetLikesByRecipeAndUserId(int recipeId, string userId)
         {
-            return _db.Likes.Include(c => c.Recipe).Include(c => c.User).Where(r => r.Recipe.Id == recipeId && r.User.Id == userId).OrderBy(x => x.Recipe.Name).ToList();
+            return _db.Likes.Where(r => r.Recipe.Id == recipeId && r.User.Id == userId).FirstOrDefault();
         }
 
         public ICollection<LikeModel> GetLikesByRecipeId(int recipeId)
