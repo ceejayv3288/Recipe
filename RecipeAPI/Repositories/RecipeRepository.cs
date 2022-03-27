@@ -52,7 +52,7 @@ namespace RecipeAPI.Repositories
                         Image = r.Image,
                         Name = r.Name,
                         UserId = r.UserId,
-                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id),
+                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id && x.IsLiked),
                         CommentsCount = _db.Comments.Count(x => x.RecipeId == r.Id)
                     })
                     .OrderByDescending(y => y.LikesCount)
@@ -87,7 +87,7 @@ namespace RecipeAPI.Repositories
                         Image = r.Image,
                         Name = r.Name,
                         UserId = r.UserId,
-                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id),
+                        LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id && x.IsLiked),
                         CommentsCount = _db.Comments.Count(x => x.RecipeId == r.Id),
                         IsLiked = _db.Likes.Any(x => x.User.Id == userId && x.Recipe.Id == r.Id && x.IsLiked)
                     }).OrderByDescending(y => y.LikesCount)
