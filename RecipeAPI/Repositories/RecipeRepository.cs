@@ -89,7 +89,7 @@ namespace RecipeAPI.Repositories
                         UserId = r.UserId,
                         LikesCount = _db.Likes.Count(x => x.RecipeId == r.Id),
                         CommentsCount = _db.Comments.Count(x => x.RecipeId == r.Id),
-                        IsLiked = _db.Likes.Any(x => x.User.Id == userId && x.Recipe.Id == r.Id)
+                        IsLiked = _db.Likes.Any(x => x.User.Id == userId && x.Recipe.Id == r.Id && x.IsLiked)
                     }).OrderByDescending(y => y.LikesCount)
                     .Take(5)
                     .Distinct()
